@@ -1,6 +1,6 @@
-// Keyboard3D.jsx
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useRef } from 'react';
 import { Box, Text, RoundedBox } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 
 const keySize = 0.018;      // 18mm keys
 const keySpacing = 0.003;   // 3mm spacing for slightly more space
@@ -15,7 +15,146 @@ function insertNameToRow(rowCount, name) {
   return arr;
 }
 
-export function Keyboard3D({ scale = [1, 1, 1], position = [1, 1, 1], rotation = [0, 0, 0]}) {
+function Key({ 
+  width, 
+  label, 
+  position, 
+  onKeyPress, 
+  pressedKeys, 
+  keyId 
+}) {
+  const meshRef = useRef();
+  const isPressed = pressedKeys.has(keyId);
+  const isSpacer = label === 'spacer';
+  
+  // Define key colors based on the mechanical keyboard scheme
+  const getKeyColor = () => {
+    if (isPressed) return "#3a4a5a"; // Darker blue when pressed
+    
+    // Special accent keys (red)
+    if (['delete'].includes(label.toLowerCase())) return "#FF6B47";
+    
+    // Function and special keys (darker blue like in reference image)
+    if (['tab', 'caps lock', 'shift', '⌘', 'return'].includes(label.toLowerCase())) return "#4A5F7A";
+    
+    // Regular keys and spacers (blue like the reference image)
+    return "#6B8CAE";
+  };
+  
+  // Animate key press
+  useFrame(() => {
+    if (meshRef.current) {
+      const targetZ = isPressed ? -keyHeight * 0.3 : 0;
+      meshRef.current.position.z += (targetZ - meshRef.current.position.z) * 0.3;
+    }
+  });
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    // Now all keys are clickable, including spacers
+    if (onKeyPress) {
+      onKeyPress(keyId, label || 'spacer');
+    }
+  };
+
+  const handlePointerOver = (e) => {
+    // All keys now show pointer cursor
+    document.body.style.cursor = 'pointer';
+  };
+
+  const handlePointerOut = () => {
+    document.body.style.cursor = 'default';
+  };
+
+  return (
+    <group position={position}>
+      <RoundedBox 
+        ref={meshRef}
+        args={[width, keySize, keyHeight]} 
+        radius={0.003} 
+        smoothness={4}
+        onClick={handleClick}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+      >
+        <meshStandardMaterial 
+          color={getKeyColor()} 
+        />
+        {label && label !== 'spacer' && (
+          <Text
+            fontSize={0.007}
+            color="#ffffff"
+            anchorX="center"
+            anchorY="middle"
+            position={[0, 0, keyHeight / 2 + 0.0005]}
+          >
+            {label}
+          </Text>
+        )}
+      </RoundedBox>
+    </group>
+  );
+}
+
+function ArrowKey({ 
+  position, 
+  symbol, 
+  onKeyPress, 
+  pressedKeys, 
+  keyId 
+}) {
+  const meshRef = useRef();
+  const isPressed = pressedKeys.has(keyId);
+  
+  useFrame(() => {
+    if (meshRef.current) {
+      const targetZ = isPressed ? -keyHeight * 0.3 : 0;
+      meshRef.current.position.z += (targetZ - meshRef.current.position.z) * 0.3;
+    }
+  });
+
+  const handleClick = (e) => {
+    e.stopPropagation();
+    if (onKeyPress) {
+      onKeyPress(keyId, symbol);
+    }
+  };
+
+  return (
+    <group position={position}>
+      <RoundedBox 
+        ref={meshRef}
+        args={[keySize, keySize / 2, keyHeight]} 
+        radius={0.003} 
+        smoothness={4}
+        onClick={handleClick}
+        onPointerOver={() => document.body.style.cursor = 'pointer'}
+        onPointerOut={() => document.body.style.cursor = 'default'}
+      >
+        <meshStandardMaterial color={isPressed ? "#3a4a5a" : "#6B8CAE"} />
+        <Text 
+          fontSize={0.007} 
+          color="#ffffff" 
+          anchorX="center" 
+          anchorY="middle" 
+          position={[0, 0, keyHeight / 2 + 0.0005]}
+        >
+          {symbol}
+        </Text>
+      </RoundedBox>
+    </group>
+  );
+}
+
+export function Keyboard3D({ 
+  scale = [1, 1, 1], 
+  position = [1, 1, 1], 
+  rotation = [0, 0, 0],
+  onKeyPress 
+}) {
+  const [pressedKeys, setPressedKeys] = useState(new Set());
+//   const [lastPressed, setLastPressed] = useState('');
+
   const layout = useMemo(() => {
     return [
       { count: 14, nameLabels: ['spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'spacer', 'delete'] },
@@ -31,29 +170,59 @@ export function Keyboard3D({ scale = [1, 1, 1], position = [1, 1, 1], rotation =
   const totalDepth = layout.length * (keySize + keySpacing) - keySpacing + framePadding * 2;
   const frameThickness = 0.01;
 
+  const handleKeyPress = (keyId, label) => {
+    // Add visual feedback
+    setPressedKeys(prev => new Set([...prev, keyId]));
+    // setLastPressed(label || keyId);
+    
+    // Remove press effect after animation
+    setTimeout(() => {
+      setPressedKeys(prev => {
+        const next = new Set(prev);
+        next.delete(keyId);
+        return next;
+      });
+    }, 150);
+
+    // Call external handler if provided
+    if (onKeyPress) {
+      onKeyPress(keyId, label);
+    }
+  };
+
   return (
     <group scale={scale} position={position} rotation={rotation}>
-      {/* Keyboard frame and keys */}
+      {/* Status display */}
+      <Text
+        fontSize={0.01}
+        color="#333"
+        anchorX="center"
+        anchorY="middle"
+        position={[0, totalDepth / 2 + 0.03, 0.02]}
+      >
+        {/* {lastPressed ? `Last pressed: ${lastPressed}` : 'Click any key!'} */}
+      </Text>
+
+      {/* Keyboard frame */}
       <RoundedBox
         args={[totalWidth + 0.03, totalDepth, frameThickness]}
-        radius={0.004} // Slightly rounded corners
+        radius={0.004}
         smoothness={2}
         position={[0, 0, -frameThickness / 2]}
       >
-        <meshStandardMaterial color="#62646C" />
+        <meshStandardMaterial color="#44464b" />
       </RoundedBox>
+
+      {/* Keyboard keys */}
       {layout.map((row, rowIndex) => {
-        const rowWidth = row.count * (keySize + keySpacing) - keySpacing;
         const yOffset = (layout.length / 2 - rowIndex - 0.5) * (keySize + keySpacing);
         let xRunningOffset = 0;
 
-          const isBottomRow = rowIndex === layout.length - 1;
-          const leftShift = isBottomRow ? -keySize * 3 : 0;
-
         return (
-            <group key={rowIndex} position={[-totalWidth / 2 + keySize / 2 + framePadding - .018, yOffset, 0]}>
+          <group key={rowIndex} position={[-totalWidth / 2 + keySize / 2 + framePadding - .018, yOffset, 0]}>
             {Array.from({ length: row.count }).map((_, col) => {
               const label = row.nameLabels[col] || '';
+              const keyId = `${rowIndex}-${col}`;
 
               // Custom widths for special keys
               let width = keySize;
@@ -61,82 +230,65 @@ export function Keyboard3D({ scale = [1, 1, 1], position = [1, 1, 1], rotation =
               if (['caps lock', 'return'].includes(label.toLowerCase())) width = keySize * 2.09;
               if (label.toLowerCase() === '⌘') width = keySize * 1.3;
               if (['shift'].includes(label.toLowerCase())) width = keySize * 2.68;
-              // Only apply spacebar width on last row and when label is truly empty
+              
               const isSpacebarRow = rowIndex === layout.length - 1;
               const isTrueSpacebar = isSpacebarRow && label === '';
-              const isSpacer = label === 'spacer';
               if (isTrueSpacebar) width = keySize * 6;
 
               const keyPosition = [xRunningOffset + width / 2, 0, 0];
               xRunningOffset += width + keySpacing;
 
               return (
-                <group key={col} position={keyPosition}>
-                  <RoundedBox args={[width, keySize, keyHeight]} radius={0.003} smoothness={4}>
-                    <meshStandardMaterial color="#e0e0e0" />
-                    {label && label !== 'spacer' && label !== '⌘' && (
-                      <Text
-                        fontSize={0.007}
-                        color="#111"
-                        anchorX="center"
-                        anchorY="middle"
-                        position={[0, 0, keyHeight / 2 + 0.0005]}
-                      >
-                        {label}
-                      </Text>
-                    )}
-                  </RoundedBox>
-                </group>
+                <Key
+                  key={col}
+                  width={width}
+                  label={label}
+                  position={keyPosition}
+                  onKeyPress={handleKeyPress}
+                  pressedKeys={pressedKeys}
+                  keyId={keyId}
+                />
               );
             })}
           </group>
         );
       })}
-      {/* Arrow keys cluster in bottom right */}
+
+      {/* Arrow keys cluster */}
       <group position={[
         totalWidth / 2 - keySize * 1.5,
         -(totalDepth / 2) + keySize * .52,
         0
       ]}>
-        {/* Left Arrow */}
-        <group position={[-keySize - keySpacing, 0, 0]}>
-          <RoundedBox args={[keySize, keySize / 2, keyHeight]} radius={0.003} smoothness={4}>
-            <meshStandardMaterial color="#e0e0e0" />
-            <Text fontSize={0.007} color="#111" anchorX="center" anchorY="middle" position={[0, 0, keyHeight / 2 + 0.0005]}>
-              {''} {/* Left arrow */}
-            </Text>
-          </RoundedBox>
-        </group>
-        {/* Down Arrow */}
-        <group position={[0, 0, 0]}>
-          <RoundedBox args={[keySize, keySize / 2, keyHeight]} radius={0.003} smoothness={4}>
-            <meshStandardMaterial color="#e0e0e0" />
-            <Text fontSize={0.007} color="#111" anchorX="center" anchorY="middle" position={[0, 0, keyHeight / 2 + 0.0005]}>
-              {''} {/* Down triangle */}
-            </Text>
-          </RoundedBox>
-        </group>
-        {/* Up Arrow */}
-        <group position={[0, (keySize / 2) + 0.001, 0]}>
-          <RoundedBox args={[keySize, keySize / 2, keyHeight]} radius={0.003} smoothness={4}>
-            <meshStandardMaterial color="#e0e0e0" />
-            <Text fontSize={0.007} color="#111" anchorX="center" anchorY="middle" position={[0, 0, keyHeight / 2 + 0.0005]}>
-              {''} {/* Up triangle */}
-            </Text>
-          </RoundedBox>
-        </group>
-        {/* Right Arrow */}
-        <group position={[keySize + keySpacing, 0, 0]}>
-          <RoundedBox args={[keySize, keySize / 2, keyHeight]} radius={0.003} smoothness={4}>
-            <meshStandardMaterial color="#e0e0e0" />
-            <Text fontSize={0.007} color="#111" anchorX="center" anchorY="middle" position={[0, 0, keyHeight / 2 + 0.0005]}>
-              {''} {/* Right arrow */}
-            </Text>
-          </RoundedBox>
-        </group>
+        <ArrowKey
+          position={[-keySize - keySpacing, 0, 0]}
+          symbol=""
+          onKeyPress={handleKeyPress}
+          pressedKeys={pressedKeys}
+          keyId="arrow-left"
+        />
+        <ArrowKey
+          position={[0, 0, 0]}
+          symbol=""
+          onKeyPress={handleKeyPress}
+          pressedKeys={pressedKeys}
+          keyId="arrow-down"
+        />
+        <ArrowKey
+          position={[0, (keySize / 2) + 0.001, 0]}
+          symbol=""
+          onKeyPress={handleKeyPress}
+          pressedKeys={pressedKeys}
+          keyId="arrow-up"
+        />
+        <ArrowKey
+          position={[keySize + keySpacing, 0, 0]}
+          symbol=""
+          onKeyPress={handleKeyPress}
+          pressedKeys={pressedKeys}
+          keyId="arrow-right"
+        />
       </group>
     </group>
   );
 }
-
-export default Keyboard3D;
