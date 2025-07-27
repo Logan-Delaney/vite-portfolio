@@ -60,7 +60,7 @@ export const myProjects = [
     },
     {
         title: 'Multiplayer Tetris',
-        desc: 'Node.js backend, React.js Frontend. A multiplayer version of the classic block stacking game leveraging Socket.io.',
+        desc: 'Node.js backend, React.js Frontend. A multiplayer version of the classic block stacking game leveraging Socket.io. Fast and reliable multiplayer server.',
         href: 'https://github.com/Logan-Delaney/riot-fastapi',
         className: 'animatedText1',
         texture: '/textures/projects/riot.mov',

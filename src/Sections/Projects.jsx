@@ -4,6 +4,7 @@ import { Center, OrbitControls } from "@react-three/drei";
 import CanvasLoader from "../components/CanvasLoader";
 import Monitor from "../components/Monitor";
 import { Canvas } from "@react-three/fiber";
+import { useMediaQuery } from "react-responsive";
 
 const projectCount = myProjects.length;
 
@@ -23,6 +24,10 @@ const Projects = () => {
             }
         })
     }
+
+
+    const isMobile = useMediaQuery( {maxWidth: 600})
+    const isTablet = useMediaQuery( {minWidth: 601, maxWidth: 1100 })
 
     return (
         <section className="c-space my-20">
@@ -65,13 +70,18 @@ const Projects = () => {
                     </div>
                 </div>
 
-                <div className="rounded-lg h-96 md:h-full shadow-2xl shadow-black-200">
+                <div 
+                    className="rounded-lg h-96 md:h-full relative"
+                    style={{
+                        filter: 'drop-shadow(0 0 20px rgba(0, 102, 255, 0.3))',
+                    }}
+                >
                     <Canvas>
                         <ambientLight intensity={2.5} />
                         <directionalLight position={[10, 10, 5]} />
                         <Center>
                             <Suspense fallback={<CanvasLoader />}>
-                                <group scale={5.7} position={[-.2, -2.3, 0]} rotation={[0, 3, 0]}>
+                                <group scale={isMobile ? 5 : 5.7} position={[-.2, -2.3, 0]} rotation={[0, 3, 0]}>
                                     <Monitor />
                                 </group>
                             </Suspense>
