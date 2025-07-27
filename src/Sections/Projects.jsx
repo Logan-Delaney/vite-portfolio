@@ -1,5 +1,9 @@
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { myProjects } from "../constants";
+import { Center, OrbitControls } from "@react-three/drei";
+import CanvasLoader from "../components/CanvasLoader";
+import Monitor from "../components/Monitor";
+import { Canvas } from "@react-three/fiber";
 
 const projectCount = myProjects.length;
 
@@ -59,6 +63,21 @@ const Projects = () => {
                             <img src="/assets/right-arrow.svg" alt="right-arrow" className="h-4 w-4"/>
                         </button>
                     </div>
+                </div>
+
+                <div className="rounded-lg h-96 md:h-full shadow-2xl shadow-black-200">
+                    <Canvas>
+                        <ambientLight intensity={2.5} />
+                        <directionalLight position={[10, 10, 5]} />
+                        <Center>
+                            <Suspense fallback={<CanvasLoader />}>
+                                <group scale={5.7} position={[-.2, -2.3, 0]} rotation={[0, 3, 0]}>
+                                    <Monitor />
+                                </group>
+                            </Suspense>
+                        </Center>
+                        <OrbitControls maxPolarAngle={Math.PI / 2} enableZoom={false} />
+                    </Canvas>
                 </div>
             </div>
         </section>
