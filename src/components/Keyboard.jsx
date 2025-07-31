@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useRef } from 'react';
+import React, { useMemo, useState, useRef, useEffect } from 'react';
 import { Box, Text, RoundedBox } from '@react-three/drei';
 import { useFrame } from '@react-three/fiber';
 
@@ -153,7 +153,7 @@ export function Keyboard3D({
   onKeyPress 
 }) {
   const [pressedKeys, setPressedKeys] = useState(new Set());
-//   const [lastPressed, setLastPressed] = useState('');
+  const [ready, setReady] = useState(false);
 
   const layout = useMemo(() => {
     return [
@@ -189,6 +189,17 @@ export function Keyboard3D({
       onKeyPress(keyId, label);
     }
   };
+  
+  useEffect(() => {
+    // Wait one frame so all Text components can sync
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
+  if (!ready) {
+    // Optionally show a loader here
+    return null;
+  }
 
   return (
     <group scale={scale} position={position} rotation={rotation}>
@@ -202,8 +213,6 @@ export function Keyboard3D({
       >
         {/* {lastPressed ? `Last pressed: ${lastPressed}` : 'Click any key!'} */}
       </Text>
-
-      {/* Keyboard frame */}
       <RoundedBox
         args={[totalWidth + 0.03, totalDepth, frameThickness]}
         radius={0.004}
