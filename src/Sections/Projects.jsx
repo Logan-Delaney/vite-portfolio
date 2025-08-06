@@ -30,7 +30,7 @@ const Projects = () => {
     const isTablet = useMediaQuery( {minWidth: 601, maxWidth: 1100 })
 
     return (
-        <section id="projects" className="c-space my-20">
+        <section id="projects" className="c-space my-20 scroll-mt-20">
             {/* <p className="head-text">Projects</p> */}
 
             <div className="grid lg:grid-cols-2 grid-cols-1 mt-12 gap-5 w-full">
@@ -54,9 +54,9 @@ const Projects = () => {
                                 </div>
                             ))}
                         </div>
-                        <a className="flex items-center gap-2 cursor-pointer text-white-600 z-5" href={currentProject.href} target="_blank" rel="noreferrer">
+                        <a className="flex items-center gap-2 cursor-pointer text-white-800 z-5" href={currentProject.href} target="_blank" rel="noreferrer">
                             <p>Check Live Site</p>
-                            <img src="/assets/arrow-up.svg" className="w-3 h-3" alt="arrow"/>
+                            <img src="/assets/arrow-up.svg" className="w-5 h-5" alt="arrow"/>
                         </a>
                     </div>
 
