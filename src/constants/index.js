@@ -15,7 +15,11 @@ export const navLinks = [
     href: '#projects',
   },
   {
-    id: 4,
+    name: 'Experience',
+    href: '#experience'
+  },
+  {
+    id: 5,
     name: 'Contact',
     href: '#contact',
   },
@@ -27,7 +31,7 @@ export const myProjects = [
         desc: 'Using the Fast API framework for Python and React.js, this fullstack app allows the user to enter their game name and then view their game stats taking advantage of the Riot API',
         href: 'https://github.com/Logan-Delaney/riot-fastapi',
         className: 'animatedText1',
-        texture: '/textures/projects/riot.mov',
+        texture: '/textures/project/project1.mp4',
         logo: '/assets/riot-logo.svg',
         logoStyle: {
             backgroundColor: '#2A1816',
@@ -63,7 +67,7 @@ export const myProjects = [
         desc: 'Node.js backend, React.js Frontend. A multiplayer version of the classic block stacking game leveraging Socket.io. Fast and reliable multiplayer server.',
         href: 'https://github.com/Logan-Delaney/riot-fastapi',
         className: 'animatedText1',
-        texture: '/textures/projects/riot.mov',
+        texture: '/textures/project/project2.mp4',
         logo: '/assets/tetris.svg',
         logoStyle: {
             backgroundColor: '#0a2f61',

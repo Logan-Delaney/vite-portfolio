@@ -42,7 +42,7 @@ const Navbar = () => {
                         <ul className="flex flex-col gap-8 items-center text-2xl">
                             {navLinks.map(({id, href, name}) => (
                                 <li key={id}>
-                                    <a href={href} className="text-neutral-200 hover:text-blue-400 transition-colors">
+                                    <a href={href} onClick={toggleMenu} className="text-neutral-200 hover:text-blue-400 transition-colors">
                                         {name}
                                     </a>
                                 </li>

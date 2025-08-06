@@ -30,8 +30,8 @@ const Projects = () => {
     const isTablet = useMediaQuery( {minWidth: 601, maxWidth: 1100 })
 
     return (
-        <section className="c-space my-20">
-            <p className="head-text">Projects</p>
+        <section id="projects" className="c-space my-20">
+            {/* <p className="head-text">Projects</p> */}
 
             <div className="grid lg:grid-cols-2 grid-cols-1 mt-12 gap-5 w-full">
                 <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200">
@@ -82,7 +82,7 @@ const Projects = () => {
                         <Center>
                             <Suspense fallback={<CanvasLoader />}>
                                 <group scale={isMobile ? 5 : 5.7} position={[-.2, -2.3, 0]} rotation={[0, 3, 0]}>
-                                    <Monitor />
+                                    <Monitor project={currentProject.texture}/>
                                 </group>
                             </Suspense>
                         </Center>
