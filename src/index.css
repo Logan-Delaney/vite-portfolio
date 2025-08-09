@@ -115,7 +115,7 @@ body::after {
 
   /* about section */
   .grid-container {
-    @apply w-full h-full border border-black-300 bg-gray-600/70 rounded-lg sm:p-7 p-4 flex flex-col gap-5;
+    @apply w-full h-full border border-white-600/30 bg-gray-600/20 rounded-lg sm:p-7 p-4 flex flex-col gap-5;
   }
 
   .grid-headtext {
@@ -161,15 +161,15 @@ body::after {
 
   /*  work experience section */
   .work-container {
-    @apply grid lg:grid-cols-3 grid-cols-1 gap-5 mt-12;
+    @apply grid lg:grid-cols-3 grid-cols-1 gap-5 mt-12 border-white-600/30;
   }
 
   .work-canvas {
-    @apply col-span-1 rounded-lg bg-black-200 border border-black-300;
+    @apply col-span-1 rounded-lg bg-black-200 border-white-600/30;
   }
 
   .work-content {
-    @apply col-span-2 rounded-lg bg-black-200 border border-black-300;
+    @apply col-span-2 rounded-lg border border-white-600/30 bg-gray-600/20;
   }
 
   .work-content_container {
@@ -177,7 +177,7 @@ body::after {
   }
 
   .work-content_logo {
-    @apply rounded-3xl w-16 h-16 p-2 bg-black-600;
+    @apply rounded-3xl w-16 h-16 p-2 bg-white;
   }
 
   .work-content_bar {
@@ -186,23 +186,23 @@ body::after {
 
   /* contact section */
   .contact-container {
-    @apply max-w-xl relative z-10 sm:px-10 px-5 mt-12;
+    @apply max-w-xl relative z-10 sm:px-10 px-5 mt-0;
   }
 
   .field-label {
-    @apply text-lg text-white-600;
+    @apply text-sm text-white-600;
   }
 
   .field-input {
-    @apply w-full bg-black-300 px-5 py-2 min-h-14 rounded-lg placeholder:text-white-500 text-lg text-white-800 shadow-black-200 shadow-2xl focus:outline-none;
+    @apply w-full bg-black-300 px-5 py-2 min-h-14 rounded-lg placeholder:text-white-500 text-sm text-white-800 shadow-black-200 shadow-2xl focus:outline-none;
   }
 
   .field-btn {
-    @apply bg-black-500 px-5 py-2 min-h-12 rounded-lg shadow-black-200 shadow-2xl flex justify-center items-center text-lg text-white gap-3;
+    @apply px-5 py-2 min-h-12 rounded-lg shadow-black-200 shadow-2xl flex justify-center items-center text-lg gap-3;
   }
 
   .field-btn_arrow {
-    @apply w-2.5 h-2.5 object-contain invert brightness-0;
+    @apply w-4 h-4 object-contain invert brightness-0;
   }
 
   /*  footer */

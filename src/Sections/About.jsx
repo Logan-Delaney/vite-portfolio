@@ -18,7 +18,7 @@ const About = () => {
     ];
 
     return (
-        <section className="c-space my-20">
+        <section id="about" className="c-space my-20 scroll-mt-20">
             <div className="grid xl:grid-cols-3 xl:grid-rows-1 md:grid-cols-2 grid-cols-1 gap-5 h-full">
                 <div className="col-span-1 xl:row-span-3">
                     <div 
@@ -74,8 +74,29 @@ const About = () => {
                 </div>
 
                 <div className="col-span-1 xl:row-span-3">
-                    <div className="grid-container">
-                        <div className="w-full h-full">
+                    <div 
+                        className={`
+                            grid-container relative overflow-hidden transition-all duration-500 ease-out
+                            ${hoveredTech !== null ? 'transform scale-[1.02] shadow-2xl' : 'shadow-lg'}
+                        `}
+                        onMouseEnter={() => setHoveredTech(0)}
+                        onMouseLeave={() => setHoveredTech(null)}
+                    >
+                        {/* Glassmorphism overlay */}
+                        <div className={`
+                            absolute inset-0 transition-opacity duration-500
+                            bg-gradient-to-br from-blue-500/10 via-purple-500/5 to-green-500/10
+                            ${hoveredTech !== null ? 'opacity-50' : 'opacity-20'}
+                        `} />
+                        
+                        {/* Animated border glow */}
+                        <div className={`
+                            absolute inset-0 rounded-lg transition-opacity duration-500
+                            bg-gradient-to-r from-blue-400/20 via-purple-400/20 to-green-400/20
+                            ${hoveredTech !== null ? 'opacity-40 blur-sm' : 'opacity-0'}
+                        `} />
+
+                        <div className="w-full h-full relative z-10">
                             <div className="grid grid-cols-3 gap-4 mb-6 h-full">
                                 {techStack.map((tech, index) => (
                                     <div

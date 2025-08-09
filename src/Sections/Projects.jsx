@@ -30,11 +30,11 @@ const Projects = () => {
     const isTablet = useMediaQuery( {minWidth: 601, maxWidth: 1100 })
 
     return (
-        <section className="c-space my-20">
-            <p className="head-text">Projects</p>
+        <section id="projects" className="c-space my-20 scroll-mt-20">
+            {/* <p className="head-text">Projects</p> */}
 
             <div className="grid lg:grid-cols-2 grid-cols-1 mt-12 gap-5 w-full">
-                <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200">
+                <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200 rounded-xl">
                     <div className="absolute top-0 right-0">
                         <img src={currentProject.spotlight} alt="spotlight" className="w-full h-96 object-cover rounded-xl"/>
                     </div>
@@ -54,9 +54,9 @@ const Projects = () => {
                                 </div>
                             ))}
                         </div>
-                        <a className="flex items-center gap-2 cursor-pointer text-white-600 z-5" href={currentProject.href} target="_blank" rel="noreferrer">
+                        <a className="flex items-center gap-2 cursor-pointer text-white-800 z-5" href={currentProject.href} target="_blank" rel="noreferrer">
                             <p>Check Live Site</p>
-                            <img src="/assets/arrow-up.svg" className="w-3 h-3" alt="arrow"/>
+                            <img src="/assets/arrow-up.svg" className="w-5 h-5" alt="arrow"/>
                         </a>
                     </div>
 
@@ -82,7 +82,7 @@ const Projects = () => {
                         <Center>
                             <Suspense fallback={<CanvasLoader />}>
                                 <group scale={isMobile ? 5 : 5.7} position={[-.2, -2.3, 0]} rotation={[0, 3, 0]}>
-                                    <Monitor />
+                                    <Monitor project={currentProject.texture}/>
                                 </group>
                             </Suspense>
                         </Center>

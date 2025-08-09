@@ -4,19 +4,19 @@ import * as THREE from 'three'
 
 const Monitor = (props) => {
   const { nodes, materials } = useGLTF('/models/monitor.glb')
-  const txt = useVideoTexture('/textures/project/project1.mp4', {
-  loop: true,
-  autoplay: true,
-  muted: true,
-  start: true,
-  crossOrigin: 'anonymous',
+  const txt = useVideoTexture(props.project, {
+    loop: true,
+    autoplay: true,
+    muted: true,
+    start: true,
+    crossOrigin: 'anonymous',
   })
 
-const videoTexture = new THREE.MeshBasicMaterial({
-  map: txt,
-  side: THREE.DoubleSide,
-  toneMapped: false,
-})
+  const videoTexture = new THREE.MeshBasicMaterial({
+    map: txt,
+    side: THREE.DoubleSide,
+    toneMapped: false,
+  })
   return (
     <group {...props} dispose={null}>
       <group rotation={[-Math.PI / 2, 0, 0]} scale={0.065}>
@@ -29,9 +29,9 @@ const videoTexture = new THREE.MeshBasicMaterial({
               material={materials.Base}
             />
             <mesh
-                geometry={nodes.Plano001_Screen_0.geometry}
-                material={videoTexture}
-                visible={true}
+              geometry={nodes.Plano001_Screen_0.geometry}
+              material={videoTexture}
+              visible={true}
             />
             <mesh
               castShadow
@@ -88,4 +88,4 @@ const videoTexture = new THREE.MeshBasicMaterial({
 
 useGLTF.preload('/models/monitor.glb')
 
-export default Monitor;
+export default Monitor
