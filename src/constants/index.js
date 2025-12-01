@@ -32,7 +32,7 @@ export const myProjects = [
         desc: 'An emulator that interprets the Chip-8 instruction set and renders graphics using Pygame. It features a fully implemented CPU loop, memory management, stack operations, timers, and key-mapping for user input.',
         href: 'https://github.com/Logan-Delaney/chip-8-python',
         className: 'animatedText1',
-        texture: '/textures/project/chip8-demo.mp4',
+        texture: '/textures/project/chip8.mp4',
         logo: '/assets/space-invader.svg',
         logoStyle: {
             backgroundColor: '#146B14',
