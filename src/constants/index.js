@@ -32,7 +32,7 @@ export const myProjects = [
         desc: 'An emulator that interprets the Chip-8 instruction set and renders graphics using Pygame. It features a fully implemented CPU loop, memory management, stack operations, timers, and key-mapping for user input.',
         href: 'https://github.com/Logan-Delaney/chip-8-python',
         className: 'animatedText1',
-        texture: '/textures/project/Chip8-Demo.mp4',
+        texture: '/textures/project/chip8-demo.mp4',
         logo: '/assets/space-invader.svg',
         logoStyle: {
             backgroundColor: '#146B14',
@@ -48,42 +48,32 @@ export const myProjects = [
       },
     ],
     },
-    // {
-    //     title: 'Multiplayer Tetris',
-    //     desc: 'Node.js backend, React.js Frontend. A multiplayer version of the classic block stacking game leveraging Socket.io. Fast and reliable multiplayer server.',
-    //     href: 'https://github.com/Logan-Delaney/riot-fastapi',
-    //     className: 'animatedText1',
-    //     texture: '/textures/project/project2.mp4',
-    //     logo: '/assets/tetris.svg',
-    //     logoStyle: {
-    //         backgroundColor: '#0a2f61',
-    //         border: '0.2px solid #135bbd',
-    //         boxShadow: '0px 0px 60px 0px #135bbd',
-    //     },
-    //     spotlight: '/assets/spotlight2.png',
-    //     tags: [
-    //   {
-    //     id: 1,
-    //     name: 'Fast API',
-    //     path: '/assets/logos/node.svg',
-    //   },
-    //   {
-    //     id: 2,
-    //     name: 'Python',
-    //     path: '/assets/logos/python.svg',
-    //   },
-    //   {
-    //     id: 3,
-    //     name: 'React.js',
-    //     path: '/assets/logos/react.svg',
-    //   },
-    //   {
-    //     id: 4,
-    //     name: 'MySQL',
-    //     path: '/assets/logos/sql.svg',
-    //   },
-    // ],
-    // },
+    {
+        title: 'Beat Grids',
+        desc: 'Node.js backend and React.js frontend. A free online DAW with a user-friendly, grid-based interface for creating music, plus backend support for saving and managing tracks.',
+        href: 'https://github.com/Logan-Delaney/beat-grid-client',
+        className: 'animatedText1',
+        texture: '/textures/project/beat-grid.mp4',
+        logo: '/assets/tetris.svg',
+        logoStyle: {
+            backgroundColor: '#0a2f61',
+            border: '0.2px solid #135bbd',
+            boxShadow: '0px 0px 60px 0px #135bbd',
+        },
+        spotlight: '/assets/spotlight2.png',
+        tags: [
+      {
+        id: 1,
+        name: 'React.js',
+        path: '/assets/logos/react.svg',
+      },
+      {
+        id: 2,
+        name: 'Node.js',
+        path: '/assets/logos/node.svg',
+      },
+    ],
+    },
 ]
 
 export const workExperiences = [
